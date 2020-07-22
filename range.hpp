@@ -1,57 +1,48 @@
 #pragma once
 
-namespace itertools {
+#include <iostream>
+#include <vector>
+using namespace std;
+namespace itertools{
 
-template <typename T>
-class range
-{
+	class range {
 
-public:
-  T r1;
-  T r2;
+		public:
+		range(int _a, int _b):a(_a),b(_b){}
 
-  range(const T r1_begin, const T r2_end) : r1(r1_begin), r2(r2_end){}
+		class iterator{
+			int iter;
 
+			public:
+			iterator(int start) : iter(start) {}
 
-  class iterator
-  {
-  public:
-    T iter;
+			int operator*() const {return iter;}
 
-    iterator(T it) : iter(it) {}
+			const iterator &operator++() {
+				++iter;
+				return *this;
+			}
+			bool operator==(const iterator &other) const {
+				return other.iter==iter;
+			}
+			iterator& operator=(const iterator& other) {
+				if (*this != other){
+					this->iter = other.iter;
+				}
+				return *this;
+			}
 
-    iterator(const iterator& other) : iter(other.iter) {}
+			bool operator!=(const iterator &other) const {
+				return other.iter!=iter;
+			}
+    };
 
-    const T operator*() const
-    {
-      return iter;
-    }
+		iterator begin() {return a;}
+		iterator end() {return b;}
 
-    iterator &operator++()
-    {
-      ++iter;
-      return *this;
-    }
-
-    bool operator!=(range::iterator const &it) const
-    {
-      return iter != it.iter;
-    }
-
-
-
-  };
-
-iterator begin()const
-{
-    return range::iterator(r1);
-}
-
-iterator end()const
-{
-  return range::iterator(r2);
-}
-
-};
-
+		typedef int value_type;
+		private:
+			iterator a;
+			iterator b;
+	};
 }
